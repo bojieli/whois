@@ -129,7 +129,12 @@
                 let tabs = '';
                 let tabContents = '';
                 record.forEach((history, historyIndex) => {
-                    query_time_display = history.query_time.split(' ')[0];
+                    let query_time_display = '';
+                    if (history.query_time === 'undefined') {
+                        query_time_display = history.create_date;
+                    } else {
+                        query_time_display = history.query_time.split(' ')[0];
+                    }
                     let activeClass = historyIndex == 0 ? 'active' : '';
                     tabs += `<li class="nav-item">
                                 <a class="nav-link ${activeClass}" id="domain-${index}-tab-${historyIndex}" data-bs-toggle="tab" href="#domain-${index}-content-${historyIndex}" role="tab">${query_time_display}</a>

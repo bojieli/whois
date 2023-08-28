@@ -87,6 +87,22 @@
         max-height: 50vh; /* Adjust based on your requirement */
         overflow-y: auto;
     }
+
+	.hidden {
+	    display: none;
+	}
+	
+	#error-message {
+	    padding: 15px 20px 0px 20px;
+	    border: 1px solid #ff7f7f;
+	    background-color: #ffeaea;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(255,0,0,0.1);
+	    text-align: center;
+	    font-weight: bold;
+	    color: #d43f3f;
+	    margin-top: 20px;
+	}
 </style>
 
 <body>
@@ -101,7 +117,12 @@
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    
+
+    <div id="error-message" class="hidden">
+        <p>No results found!</p>
+        <p>You may use exact match (e.g., "ring0.me") or wildcard TLD match (e.g., "ring0").</p>
+    </div>
+
     <!-- Placeholder for results -->
     <div id="results" class="mt-5"></div>
 </div>
@@ -122,8 +143,11 @@
             $('#main-content').css('justify-content', 'normal');
 
             if (Object.keys(data).length === 0) {
-                $('#results').append("<p style='color: red;'>No results</p>");
+                $('#error-message').removeClass('hidden');
+            } else {
+                $('#error-message').addClass('hidden');
             }
+
             Object.keys(data).forEach((domainKey, index) => {
                 let record = data[domainKey];
                 let tabs = '';

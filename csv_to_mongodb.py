@@ -136,7 +136,7 @@ def main(file_path, delimiter, max_rows, elastic_index, datetime_field, elastic_
 
 
 client = MongoClient('localhost', 27017)
-db = client['whois2']
+db = client['whois']
 collection = db['whois']
 
 def send_to_elastic(to_mongo_docs, block=0):

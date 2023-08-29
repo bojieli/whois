@@ -4,7 +4,7 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 
 # Select the 'whois' database and 'whois' collection
-db = client['whois']
+db = client['whois2']
 collection = db['whois']
 
 # Define the pipeline for the update operation
@@ -38,3 +38,7 @@ collection.create_index("domain_word")
 
 print("Create index domain_word completed.")
 
+dates = ['query_time', 'create_date', 'update_date', 'expiry_date']
+for d in dates:
+    collection.create_index(d)
+    print("Create index " + d + " completed.")

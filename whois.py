@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from flask import Flask, render_template, request, jsonify
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING, DESCENDING
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ def search_domain(domain_query):
     results = {}
 
     # Searching for exact matches in domain_name field
-    for record in collection.find({"domain_name": domain_query}):
+    for record in collection.find({"domain_name": domain_query}).sort("query_time", ASCENDING):
         domain_name = record['domain_name']
         if domain_name not in results:
             results[domain_name] = []
@@ -27,7 +27,7 @@ def search_domain(domain_query):
         results[domain_name].append(record)
 
     # Searching for exact matches in domain_word field
-    for record in collection.find({"domain_word": domain_query}):
+    for record in collection.find({"domain_word": domain_query}).sort("query_time", ASCENDING):
         domain_name = record['domain_name']
         if domain_name not in results:
             results[domain_name] = []

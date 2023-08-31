@@ -173,6 +173,9 @@
     $('#domainForm').submit(function(e) {
         e.preventDefault();
         let inputDomain = $('#domain').val();
+	if (inputDomain == '') {
+	    inputDomain = 'example.com';
+	}
         $.post("/get_domain_history", { domain: inputDomain }, function(data) {
             $('#results').empty();
             $('body').css('justify-content', 'normal');

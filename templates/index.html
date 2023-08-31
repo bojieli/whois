@@ -103,6 +103,38 @@
 	    color: #d43f3f;
 	    margin-top: 20px;
 	}
+
+#loader {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white background */
+    visibility: hidden; /* Hide by default */
+    opacity: 0; /* Set the initial opacity to 0 */
+    transition: opacity 0.3s; /* Add a smooth transition */
+
+    /* Add these to center the child spinner */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    border: 16px solid #f3f3f3;  /* Light gray */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 </style>
 
 <body>
@@ -117,6 +149,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
+
+    <div id="loader">
+	<div class="spinner"></div>
+    </div>
 
     <div id="error-message" class="hidden">
         <p>No results found!</p>
@@ -197,5 +233,10 @@
             });
         });
     });
-</script>
 
+$(document).ajaxStart(function() {
+    $("#loader").css({ "visibility": "visible", "opacity": "1" });
+}).ajaxStop(function() {
+    $("#loader").css({ "visibility": "hidden", "opacity": "0" });
+});
+</script>

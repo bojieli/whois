@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient, ASCENDING, DESCENDING
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -14,6 +15,12 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+def format_date(record):
+    date_fields = ['query_time', 'create_date', 'update_date', 'expiry_date']
+    for field in date_fields:
+        if record[field] and isinstance(record[field], datetime):
+            record[field] = record[field].strftime("%Y-%m-%d %H:%M:%S")
+
 def search_domain(domain_query):
     results = {}
 
@@ -24,6 +31,7 @@ def search_domain(domain_query):
             results[domain_name] = []
 
         record.pop('_id')
+        format_date(record)
         results[domain_name].append(record)
 
     # Searching for exact matches in domain_word field
@@ -33,6 +41,7 @@ def search_domain(domain_query):
             results[domain_name] = []
 
         record.pop('_id')
+        format_date(record)
         results[domain_name].append(record)
 
     return results

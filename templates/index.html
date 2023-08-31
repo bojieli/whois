@@ -154,10 +154,10 @@
                 let tabContents = '';
                 record.forEach((history, historyIndex) => {
                     let query_time_display = '';
-                    if (history.query_time === 'undefined') {
-                        query_time_display = history.create_date;
-                    } else {
+                    if ('query_time' in history && history.query_time != '') {
                         query_time_display = history.query_time.split(' ')[0];
+                    } else {
+                        query_time_display = history.create_date;
                     }
                     let activeClass = historyIndex == 0 ? 'active' : '';
                     tabs += `<li class="nav-item">

@@ -21,21 +21,33 @@ def format_date(record):
         if record[field] and isinstance(record[field], datetime):
             record[field] = record[field].strftime("%Y-%m-%d %H:%M:%S")
 
+def deduplicate(records):
+    seen_combinations = set()
+    deduplicated_records = []
+
+    for record in records:
+        query_time = record['query_time'] if 'query_time' in record else None
+        update_date = record['update_date'] if 'update_date' in record else None
+        combo = (query_time, update_date)
+        if combo not in seen_combinations:
+            seen_combinations.add(combo)
+            deduplicated_records.append(record)
+
+    return deduplicated_records
+
 def search_domain(domain_query):
+    # Searching for exact matches in domain_name or domain_word field
+    records = collection.find({
+        "$or": [
+            {"domain_name": domain_query},
+            {"domain_word": domain_query}
+        ]
+    }).sort("query_time", ASCENDING)
+
+    deduped_records = deduplicate(records)
+
     results = {}
-
-    # Searching for exact matches in domain_name field
-    for record in collection.find({"domain_name": domain_query}).sort("query_time", ASCENDING):
-        domain_name = record['domain_name']
-        if domain_name not in results:
-            results[domain_name] = []
-
-        record.pop('_id')
-        format_date(record)
-        results[domain_name].append(record)
-
-    # Searching for exact matches in domain_word field
-    for record in collection.find({"domain_word": domain_query}).sort("query_time", ASCENDING):
+    for record in deduped_records:
         domain_name = record['domain_name']
         if domain_name not in results:
             results[domain_name] = []

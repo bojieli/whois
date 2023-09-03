@@ -195,11 +195,13 @@
                     let query_time_display = '';
                     if (history.query_time !== undefined && history.query_time !== null && history.query_time != '') {
                         query_time_display = history.query_time.split(' ')[0];
+                    } else if (history.update_date !== undefined && history.update_date !== null && history.update_date != '') {
+                        query_time_display = history.update_date.split(' ')[0];
                     } else if (history.create_date !== undefined && history.create_date !== null && history.create_date != '') {
                         query_time_display = history.create_date.split(' ')[0];
-		    } else {
-		    	query_time_display = 'Unknown'
-		    }
+		            } else {
+                        query_time_display = 'Unknown'
+		            }
                     let activeClass = historyIndex == 0 ? 'active' : '';
                     tabs += `<li class="nav-item">
                                 <a class="nav-link ${activeClass}" id="domain-${index}-tab-${historyIndex}" data-bs-toggle="tab" href="#domain-${index}-content-${historyIndex}" role="tab">${query_time_display}</a>

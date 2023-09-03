@@ -105,6 +105,8 @@ def main(file_path, delimiter, max_rows, elastic_index, datetime_field, elastic_
                     if doc[header] == '':
                         doc[header] = None
                     if header == 'domain_name':
+                        # use lower case for domain names
+                        doc[header] = doc[header].lower()
                         try:
                             doc['domain_word'], doc['domain_tld'] = doc[header].split('.', 1)
                         except:

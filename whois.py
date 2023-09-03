@@ -36,6 +36,8 @@ def deduplicate(records):
     return deduplicated_records
 
 def search_domain(domain_query):
+    domain_query = domain_query.strip().lower()
+
     # Searching for exact matches in domain_name or domain_word field
     records = collection.find({
         "$or": [
